@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gráfico de Unidades a Producir, Western and Steel y Costo fabricarlo CMT</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 40px;
+    background-color: #f9fafb;
+    color: #333;
+  }
+  h1 {
+    text-align: center;
+    color: #222;
+  }
+  #chart {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+<h1>Comparación: Unidades a Producir, Western and Steel y Costo fabricarlo CMT por Mes</h1>
+<canvas id="chart" width="900" height="450"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<script>
+  // Datos
+  const meses = ['Jun-25', 'Jul-25', 'Aug-25', 'Sep-25', 'Oct-25', 'Nov-25', 'Dec-25', 'Jan-26', 'Feb-26'];
+  const unidades = [1343, 1594, 1803, 1841, 2002, 1995, 2339, 1296, 1220];
+  const westernAndSteel = [2045.12, 2427.34, 2745.61, 2803.47, 3048.65, 3037.99, 3561.83, 1973.55, 1857.82];
+  const costoFabricarloCMT = [712.19, 845.30, 956.13, 976.28, 1061.66, 1057.95, 1240.37, 687.27, 646.97];
+
+  const ctx = document.getElementById('chart').getContext('2d');
+
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: meses,
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Unidades a Producir',
+          data: unidades,
+          backgroundColor: 'rgba(54, 162, 235, 0.7)',
+          yAxisID: 'y-unidades'
+        },
+        {
+          type: 'line',
+          label: 'Western and Steel',
+          data: westernAndSteel,
+          borderColor: 'rgba(255, 99, 132, 0.9)',
+          borderWidth: 3,
+          fill: false,
+          yAxisID: 'y-precio-costo'
+        },
+        {
+          type: 'line',
+          label: 'Costo fabricarlo CMT',
+          data: costoFabricarloCMT,
+          borderColor: 'rgba(75, 192, 192, 0.9)',
+          borderWidth: 3,
+          fill: false,
+          yAxisID: 'y-precio-costo'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      stacked: false,
+      scales: {
+        'y-unidades': {
+          type: 'linear',
+          position: 'left',
+          title: {
+            display: true,
+            text: 'Unidades a Producir'
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        },
+        'y-precio-costo': {
+          type: 'linear',
+          position: 'right',
+          title: {
+            display: true,
+            text: 'Western and Steel / Costo fabricarlo CMT ($)'
+          },
+          grid: {
+            drawOnChartArea: true
+          },
+          beginAtZero: false
+        }
+      },
+      plugins: {
+        legend: {
+          labels: {
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          }
+        },
+        tooltip: {
+          enabled: true,
+          mode: 'nearest',
+          intersect: false,
+          callbacks: {
+            label: function(context) {
+              if(context.dataset.type === 'line'){
+                return context.dataset.label + ': $' + context.formattedValue;
+              }
+              return context.dataset.label + ': ' + context.formattedValue;
+            }
+          }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
+
