@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE html>Add commentMore actions
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gráficos de Producción Mensual</title>
+<title>Gráfico de Unidades a Producir, Western and Steel y Costo fabricarlo CMT</title>
 <style>
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,223 +14,109 @@
   h1 {
     text-align: center;
     color: #222;
-    margin-bottom: 40px;
   }
-  .chart-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
-    margin-bottom: 40px;
-  }
-  .chart-box {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    padding: 20px;
-    width: 900px;
-    max-width: 100%;
-  }
-  .chart-title {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #444;
-  }
-  canvas {
-    width: 100% !important;
-    height: auto !important;
-  }
-  .data-table {
-    margin: 30px auto;
-    border-collapse: collapse;
-    width: 100%;
+  #chart {
     max-width: 900px;
-  }
-  .data-table th, .data-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-  }
-  .data-table th {
-    background-color: #f2f2f2;
+    margin: 0 auto;
   }
 </style>
 </head>
 <body>
-<h1>Análisis de Unidades a Utilizar por Mes</h1>
-
-<div class="chart-container">
-  <!-- Gráfico principal -->
-  <div class="chart-box">
-    <div class="chart-title">Unidades a Utilizar por Mes</div>
-    <canvas id="mainChart" height="450"></canvas>
-  </div>
-
-  <!-- Gráfico comparativo (opcional) -->
-  <div class="chart-box">
-    <div class="chart-title">Tendencia de Producción (Comparativo)</div>
-    <canvas id="comparisonChart" height="450"></canvas>
-  </div>
-</div>
-
-<!-- Tabla de datos -->
-<table class="data-table">
-  <thead>
-    <tr>
-      <th>Mes</th>
-      <th>Jul-25</th>
-      <th>Aug-25</th>
-      <th>Sep-25</th>
-      <th>Oct-25</th>
-      <th>Nov-25</th>
-      <th>Dec-25</th>
-      <th>Jan-26</th>
-      <th>Feb-26</th>
-      <th>Mar-26</th>
-      <th>Apr-26</th>
-      <th>May-26</th>
-      <th>Jun-26</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Unidades</td>
-      <td>1,594</td>
-      <td>1,133</td>
-      <td>720</td>
-      <td>300</td>
-      <td>479</td>
-      <td>476</td>
-      <td>942</td>
-      <td>564</td>
-      <td>874</td>
-      <td>904</td>
-      <td>951</td>
-      <td>1,036</td>
-    </tr>
-  </tbody>
-</table>
-
+<h1>Comparación: Unidades a Producir, Western and Steel y Costo fabricarlo CMT por Mes</h1>
+<canvas id="chart" width="900" height="450"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 <script>
-  // Datos proporcionados
-  const meses = ['Jul-25', 'Aug-25', 'Sep-25', 'Oct-25', 'Nov-25', 'Dec-25', 
-                'Jan-26', 'Feb-26', 'Mar-26', 'Apr-26', 'May-26', 'Jun-26'];
-  
-  const unidades = [1594, 1133, 720, 300, 479, 476, 942, 564, 874, 904, 951, 1036];
+  // Datos
+  const meses = ['Jun-25', 'Jul-25', 'Aug-25', 'Sep-25', 'Oct-25', 'Nov-25', 'Dec-25', 'Jan-26', 'Feb-26'];
+  const unidades = [1343, 1594, 1803, 1841, 2002, 1995, 2339, 1296, 1220];
+  const westernAndSteel = [2045.12, 2427.34, 2745.61, 2803.47, 3048.65, 3037.99, 3561.83, 1973.55, 1857.82];
+  const costoFabricarloCMT = [712.19, 845.30, 956.13, 976.28, 1061.66, 1057.95, 1240.37, 687.27, 646.97];
 
-  // Crear gráfico principal
-  const mainCtx = document.getElementById('mainChart').getContext('2d');
-  new Chart(mainCtx, {
+  const ctx = document.getElementById('chart').getContext('2d');
+
+  const chart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: meses,
-      datasets: [{
-        label: 'Unidades a Utilizar',
-        data: unidades,
-        backgroundColor: meses.map((mes, index) => 
-          index < 6 ? 'rgba(54, 162, 235, 0.7)' : 'rgba(255, 159, 64, 0.7)'),
-        borderColor: meses.map((mes, index) => 
-          index < 6 ? 'rgba(54, 162, 235, 1)' : 'rgba(255, 159, 64, 1)'),
-        borderWidth: 1
-      }]
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Unidades a Producir',
+          data: unidades,
+          backgroundColor: 'rgba(54, 162, 235, 0.7)',
+          yAxisID: 'y-unidades'
+        },
+        {
+          type: 'line',
+          label: 'Western and Steel',
+          data: westernAndSteel,
+          borderColor: 'rgba(255, 99, 132, 0.9)',
+          borderWidth: 3,
+          fill: false,
+          yAxisID: 'y-precio-costo'
+        },
+        {
+          type: 'line',
+          label: 'Costo fabricarlo CMT',
+          data: costoFabricarloCMT,
+          borderColor: 'rgba(75, 192, 192, 0.9)',
+          borderWidth: 3,
+          fill: false,
+          yAxisID: 'y-precio-costo'
+        }
+      ]
     },
     options: {
       responsive: true,
-      plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          callbacks: {
-            label: function(context) {
-              return `${context.dataset.label}: ${context.formattedValue}`;
-            }
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      stacked: false,
+      scales: {
+        'y-unidades': {
+          type: 'linear',
+          position: 'left',
+          title: {
+            display: true,
+            text: 'Unidades a Producir'
+          },
+          grid: {
+            drawOnChartArea: false
           }
         },
-        title: {
-          display: true,
-          text: 'Distribución Mensual de Unidades a Utilizar',
-          font: {
-            size: 16
-          }
+        'y-precio-costo': {
+          type: 'linear',
+          position: 'right',
+          title: {
+            display: true,
+            text: 'Western and Steel / Costo fabricarlo CMT ($)'
+          },
+          grid: {
+            drawOnChartArea: true
+          },
+          beginAtZero: false
         }
       },
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Unidades',
-            font: {
-              weight: 'bold'
-            }
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Meses',
-            font: {
-              weight: 'bold'
-            }
-          }
-        }
-      }
-    }
-  });
-
-  // Crear gráfico comparativo (línea)
-  const comparisonCtx = document.getElementById('comparisonChart').getContext('2d');
-  new Chart(comparisonCtx, {
-    type: 'line',
-    data: {
-      labels: meses,
-      datasets: [{
-        label: 'Tendencia de Unidades',
-        data: unidades,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderWidth: 3,
-        tension: 0.3,
-        fill: true
-      }]
-    },
-    options: {
-      responsive: true,
       plugins: {
         legend: {
-          display: true,
-          position: 'top'
+          labels: {
+            font: {
+              size: 14,
+              weight: 'bold'
+            }
+          }
         },
         tooltip: {
+          enabled: true,
+          mode: 'nearest',
+          intersect: false,
           callbacks: {
             label: function(context) {
-              return `${context.dataset.label}: ${context.formattedValue}`;
-            }
-          }
-        }
-      },
-      scales: {
-        y: {
-          beginAtZero: false,
-          min: 200,
-          title: {
-            display: true,
-            text: 'Unidades',
-            font: {
-              weight: 'bold'
-            }
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Meses',
-            font: {
-              weight: 'bold'
+              if(context.dataset.type === 'line'){
+                return context.dataset.label + ': $' + context.formattedValue;
+              }
+              return context.dataset.label + ': ' + context.formattedValue;
             }
           }
         }
